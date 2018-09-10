@@ -1,6 +1,7 @@
 * {
-    margin: 0;
     padding: 0;
+    margin: 0;
+    font-family: Quicksand, Arvo, Amiri,Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .navBarCustom {
@@ -12,11 +13,28 @@
 }
 
 .sideBarCustom {
-    background-image: linear-gradient(pink, white)
+    background-image: linear-gradient(pink, white);
 }
 
 .marginTop {
-    margin-top: 20px
+    margin-top: 20px;
+}
+
+.marginBottom {
+    margin-bottom: 50px;
+}
+
+.carouselCustom {
+    width: 1000px;
+    height: 450px;
+}
+
+.fontIconMargin {
+    width : 130px;
+    font-size: small;
+    margin-top: 10px;
+    margin-right: 60px;
+    float : right;
 }
 
 .whiteBox {
@@ -24,6 +42,17 @@
     width : 10px;
 }
 
-.footer {
-    background-color:#f8bbd0;
+.footer{
+    background-color: pink
+}
+
+#footer {
+    height: 20px;
+    line-height: 0.8;
+    background-color: pink;
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    bottom: 0;
 }
