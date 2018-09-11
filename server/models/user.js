@@ -19,6 +19,10 @@ const UserSchema = new Schema({
         type : String,
         unique : 'Email should be unique'
     },
+    role : {
+        type : String,
+        default : 'user'
+    },
     listTransactions : [{
         type : String
     }]

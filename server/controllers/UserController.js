@@ -18,7 +18,8 @@ class UserController {
                 name : req.body.name,
                 username : req.body.username,
                 password : hash,
-                email : req.body.email
+                email : req.body.email,
+                role : req.body.role
             })
             .then(row =>{
                 
@@ -30,7 +31,8 @@ class UserController {
                         jwt.sign({
                             user_id : row._id,
                             name : row.name,
-                            email : row.email
+                            email : row.email,
+                            role : row.role
 
                         },process.env.SECRETTOKEN,(error,token)=>{
                             if(error){
@@ -71,7 +73,8 @@ class UserController {
             jwt.sign({
                 user_id : row._id,
                 name : row.name,
-                email : row.email
+                email : row.email,
+                role : row.role
 
             },process.env.SECRETTOKEN,(error,token)=>{
                 if(error){

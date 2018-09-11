@@ -1,0 +1,9 @@
+// Mongoose behavior
+1. if you set a one to many relationship.
+   in which you have already connect those two schemas in the model.
+   let say table A has many table B
+   we can only populate the detail data of table B.
+   In that case table A will show all the information of table B.
+
+   on contrary, table B will only show the object id of table A.
+   even if you try to populate those by using Model.find({}).populate('key_parameter_in_table_B')
