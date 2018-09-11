@@ -4,6 +4,7 @@ const Transcation = require('../models/transaction');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId
+const ConvertToObjectId = require('../helpers/ConvertToObjectId');
 
 class TranscationController {
 
@@ -26,15 +27,20 @@ class TranscationController {
             // get this user data transaction
             User.findOne({_id : req.decoded.user_id})
                 .then(row =>{
-                    console.log('INI DATA USER-->',row)
-                    console.log('ini array-->',arrayTransaction)
+                    // console.log('INI DATA USER-->',row)
+                    // console.log('ini array-->',arrayTransaction)
+
+                    // convert your data first
+                    // let newArr = ConvertToObjectId(arrayTransaction);
+                    // console.log('new Array-->',newArr)
+
                     //update this user's data with bunch of transaction
                     User.findOneAndUpdate({_id : req.decoded.user_id},{
                         name : row.name,
                         username : row.username,
                         password : row.password,
                         email : row.email,
-                        transactionsList : req.body['itemId']
+                        transactionsList : arrayTransaction
                     })
                         .then(row =>{
                             res.status(200).json({ msg : 'Transaction success'})

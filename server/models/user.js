@@ -24,7 +24,7 @@ const UserSchema = new Schema({
         default : 'user'
     },
     transactionsList : [{
-        type : String,
+        type : Schema.Types.ObjectId,
         ref : 'Transaction'
     }]
 },{
