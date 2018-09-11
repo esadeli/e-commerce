@@ -46,8 +46,12 @@
     background-color: pink
 }
 
+#cartModal{
+    font-family: Quicksand, Arvo, Amiri,Cambria, Cochin;
+}
+
 #footer {
-    height: 20px;
+    height: 60px;
     line-height: 0.8;
     background-color: pink;
     position: fixed;
@@ -55,4 +59,9 @@
     width: 100%;
     left: 0;
     bottom: 0;
+}
+
+#footerContent {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
