@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Amiri|Arvo" rel="stylesheet"> 
@@ -87,48 +89,59 @@
                                     </div>
                                 </div>
                                 <div class="marginBottom"></div>
-                                    <div class="row">
-                                        <div class ="col-md-3">
-                                                <div class="itemBox">
-                                                    <div class="card" style="width: 18rem;">
-                                                        <img class="card-img-top img-fluid" src="./assets/image/asian_casual_fashion03.jpg" alt="Card image cap">
-                                                        <div class="card-body">
-                                                        <h5 class="card-title">Hot Item</h5>
-                                                        <p class="card-text">Latest form Japan.</p>
-                                                        <a href="#" class="btn btn-primary">Order Now</a>
+                                    <div id ="app">
+                                        <div v-for="data in info.data.data">
+                                            <div class="row">
+                                                <div class ="col-md-3">
+                                                    <div class="itemBox">
+                                                        <div class="card" style="width: 18rem;">
+                                                            <img class="card-img-top img-fluid" src="./assets/image/asian_casual_fashion03.jpg" alt="Card image cap">
+                                                            <div class="card-body">
+                                                            <h5 class="card-title">{{ data.name }}</h5>
+                                                            <p class="card-text">Price : {{ data.price }}</p>
+                                                            <a href="#" class="btn btn-primary">Order Now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                </div>
+                                                <div class ="col-md-3">
+                                                    <div class="itemBox">
+                                                        <div class="card" style="width: 18rem;">
+                                                            <img class="card-img-top img-fluid" src="./assets/image/japan-casual-02.jpg" alt="Card image cap">
+                                                            <div class="card-body">
+                                                            <h5 class="card-title">{{ data.name }}</h5>
+                                                            <p class="card-text">Price : {{ data.price }}</p>
+                                                            <a href="#" class="btn btn-primary">Order Now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    </div>
+                                                <div class ="col-md-3">
+                                                    <div class="itemBox">
+                                                        <div class="card" style="width: 18rem;">
+                                                            <img height ="430" class="card-img-top" src="./assets/image/japan-casual01.jpg" alt="Card image cap">
+                                                            <div class="card-body">
+                                                            <h5 class="card-title">{{ data.name }}</h5>
+                                                            <p class="card-text">Price : {{ data.price }}</p>
+                                                            <a href="#" class="btn btn-primary">Order Now</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-1">
-                                            </div>
-                                            <div class ="col-md-3">
-                                                <div class="itemBox">
-                                                    <div class="card" style="width: 18rem;">
-                                                        <img class="card-img-top img-fluid" src="./assets/image/japan-casual-02.jpg" alt="Card image cap">
-                                                        <div class="card-body">
-                                                        <h5 class="card-title">Hot Item</h5>
-                                                        <p class="card-text">Latest form Japan.</p>
-                                                        <a href="#" class="btn btn-primary">Order Now</a>
-                                                        </div>
+                                            <div class="row">
+                                                <div>
+                                                    <div class="col-md-12">
+                                                        <img height="40px" width="100%" src="./assets/image/whiteBox.jpg">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                </div>
-                                            <div class ="col-md-3">
-                                                <div class="itemBox">
-                                                    <div class="card" style="width: 18rem;">
-                                                        <img height ="430" class="card-img-top" src="./assets/image/japan-casual01.jpg" alt="Card image cap">
-                                                        <div class="card-body">
-                                                        <h5 class="card-title">Hot Item</h5>
-                                                        <p class="card-text">Latest form Japan.</p>
-                                                        <a href="#" class="btn btn-primary">Order Now</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                    </div>
+                                            </div>        
+                                        </div>  
+                                    </div>    
                                     <div class="row">
                                         <div>
                                             <div class="col-md-12">
@@ -179,6 +192,21 @@
             <p>Copyright: &copy; E-Belanja 2018</p>
         </div>
     </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data () {
+                return {
+                info: null
+                }
+            },
+            created () {
+                axios
+                .get('http://localhost:3000/items/lists')
+                .then(response => (this.info = response))
+            }
+        })
+    </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
