@@ -43,18 +43,13 @@
                 <div class="row">
                         <div class="col-md-3">
                             <h3 class="my-4">Categories</h3>
-                            <div class="list-group">
-                                    <a href="#" class="list-group-item sideBarCustom">Casual</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Chic</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Denim</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Sport</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Kids</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Japan</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Korean</a>
-                                    <a href="#" class="list-group-item sideBarCustom">USA</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Europe</a>
-                                    <a href="#" class="list-group-item sideBarCustom">Luxury</a>
-                            </div>
+                                <div id="appCategory">
+                                    <div v-for ="department in infoCategory.data.data">
+                                        <div class="list-group">
+                                            <button v-on:click="getCategory('{{ department.name }}')" class="list-group-item sideBarCustom">{{ department.name }}</button>
+                                        </div>
+                                    </div>    
+                                </div>    
                         </div>
                         <div class="col-md-9">
                             <div class="marginTop">
@@ -145,7 +140,7 @@
                                     <div class="row">
                                         <div>
                                             <div class="col-md-12">
-                                                <img height="70px" width="100%" src="./assets/image/whiteBox.jpg">
+                                                <img height="30px" width="100%" src="./assets/image/whiteBox.jpg">
                                             </div>
                                         </div>
                                     </div>
@@ -193,17 +188,54 @@
         </div>
     </div>
     <script>
+        // get all data
         var app = new Vue({
             el: '#app',
             data () {
                 return {
-                info: null
+                    info: null,
+                    route : `http://localhost:3000/items/lists`,
+                    httpMethod : 'GET'
+                }
+            },
+            methods :{
+                getCategory : function (input){
+                    console.log('TEST--->',input)
                 }
             },
             created () {
-                axios
-                .get('http://localhost:3000/items/lists')
-                .then(response => (this.info = response))
+                axios({
+                    method : this.httpMethod,
+                    url : this.route
+                })
+                .then(response => {
+                    this.info = response
+                })
+                .catch(error =>{
+                    this.info = error
+                })
+            }
+        })
+        // get category
+        var appCategory = new Vue({
+            el : '#appCategory',
+            data () {
+                return {
+                    infoCategory : null
+                }
+            },
+            created (){
+                axios({
+                    method : 'GET',
+                    url : `http://localhost:3000/categories/lists`
+                })
+                .then( response =>{
+                    this.infoCategory = response
+                })
+                .catch(error => {
+                    this.infoCategory = error
+                })
+                
             }
         })
     </script>
