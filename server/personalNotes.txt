@@ -1,5 +1,5 @@
-// Mongoose behavior
-1. if you set a one to many relationship.
+1. Mongoose behavior
+   if you set a one to many relationship.
    in which you have already connect those two schemas in the model.
    let say table A has many table B
    we can only populate the detail data of table B.
@@ -7,3 +7,11 @@
 
    on contrary, table B will only show the object id of table A.
    even if you try to populate those by using Model.find({}).populate('key_parameter_in_table_B')
+
+2. Middlewares behavior on router.
+   When you have already defined a middlewares in a router. and assign it using 
+   router.use(<name of your middlewares>)
+   even if you didn't attach the middlewares in its specific router.
+   it will affect all the router.
+   In this case, if we have public access for specific routes.
+   It would be better to locate it in the app.js or server.js 

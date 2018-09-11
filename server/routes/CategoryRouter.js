@@ -3,9 +3,13 @@
 const express = require('express');
 const router = express.Router();
 const CategoryController = require('../controllers/CategoryController');
+const IsLogin = require('../middlewares/IsLogin');
+const IsAdmin = require('../middlewares/IsAdmin');
+
+// router.use(IsAdmin)
 
 // create new category
-router.post('/add',(req,res)=>{
+router.post('/add',IsLogin,IsAdmin,(req,res)=>{
     CategoryController.createCategory(req,res);
 })
 
@@ -15,12 +19,12 @@ router.get('/lists',(req,res)=>{
 })
 
 // get individual view of category
-router.get('/view/:id',(req,res)=>{
+router.get('/view/:id',IsLogin,IsAdmin,(req,res)=>{
     CategoryController.getCategoryByName(req,res);
 })
 
 // edit category
-router.put('/edit/:id',(req,res)=>{
+router.put('/edit/:id',IsLogin,IsAdmin,(req,res)=>{
     CategoryController.editCategory(req,res);
 })
 

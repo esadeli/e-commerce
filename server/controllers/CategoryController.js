@@ -56,6 +56,8 @@ class CategoryController {
 
     // edit category
     static editCategory(req,res){
+
+        // console.log('CATEGORY-->',req.body['groupItem'])
         Category.findOneAndUpdate({_id : req.params.id},{
             name : req.body.name,
             groupItem : req.body['groupItem']

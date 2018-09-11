@@ -24,7 +24,6 @@ app.use('/categories',CategoryRouter);
 app.use('/items',ItemRouter);
 app.use('/transactions',TransactionRouter);
 
-
 app.get('/',(req,res)=>{
     console.log('Base set up OK')
 });

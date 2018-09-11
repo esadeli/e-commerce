@@ -3,6 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const ItemController = require('../controllers/ItemController');
+const IsLogin = require('../middlewares/IsLogin');
+const IsAdmin = require('../middlewares/IsAdmin');
+// router.use(IsAdmin);
+
 
 // get lists of items
 router.get('/lists',(req,res)=>{
@@ -10,17 +14,17 @@ router.get('/lists',(req,res)=>{
 })
 
 // add new items
-router.post('/add',(req,res)=>{
+router.post('/add',IsLogin,IsAdmin,(req,res)=>{
     ItemController.createItem(req,res);
 })
 
 // edit item
-router.put('/edit/:id',(req,res)=>{
+router.put('/edit/:id',IsLogin,IsAdmin,(req,res)=>{
     ItemController.editItem(req,res);
 })
 
 // delete item
-router.delete('/delete/:id',(req,res)=>{
+router.delete('/delete/:id',IsLogin,IsAdmin,(req,res)=>{
     ItemController.deleteItem(req,res);
 })
 

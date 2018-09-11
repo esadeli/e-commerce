@@ -23,8 +23,9 @@ const UserSchema = new Schema({
         type : String,
         default : 'user'
     },
-    listTransactions : [{
-        type : String
+    transactionsList : [{
+        type : String,
+        ref : 'Transaction'
     }]
 },{
     timestamps : true

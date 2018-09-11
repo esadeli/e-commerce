@@ -2,6 +2,8 @@
 
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 function IsLogin(req,res,next) {
     
@@ -13,10 +15,11 @@ function IsLogin(req,res,next) {
             if(error){
                 res.status(403).json({ msg : 'Invalid jwt token' });
             }else{
-
-                User.findOne({ _id : decoded.id, email : decoded.email })
+                let idCheck = ObjectId(decoded.user_id)
+                User.findOne({ _id : idCheck,email : decoded.email })
                     .then(row =>{
                         if(row){
+                            req.decoded = decoded;
                             next();
 
                         }else if(row ===null){

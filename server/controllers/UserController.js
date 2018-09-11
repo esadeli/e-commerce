@@ -91,6 +91,20 @@ class UserController {
             res.status(500).json({ msg : err});
         })
     }
+
+    // get all users
+    static getAllUsers(req,res){
+        User.find({}).populate('transactionsList')
+            .then(rows=>{
+                res.status(200).json({
+                    msg : 'List of users',
+                    data : rows
+                })
+            })
+            .catch(err =>{
+                res.status(500).json({ msg : err})
+            })
+    }
 }
 
 module.exports = UserController
