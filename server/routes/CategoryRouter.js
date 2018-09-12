@@ -19,7 +19,7 @@ router.get('/lists',(req,res)=>{
 })
 
 // get individual view of category
-router.get('/view/:id',IsLogin,IsAdmin,(req,res)=>{
+router.post('/view',(req,res)=>{
     CategoryController.getCategoryByName(req,res);
 })
 
@@ -29,7 +29,7 @@ router.put('/edit/:id',IsLogin,IsAdmin,(req,res)=>{
 })
 
 // delete category
-router.delete('/delete/:id',(req,res)=>{
+router.delete('/delete/:id',IsLogin,IsAdmin,(req,res)=>{
     CategoryController.deleteCategory(req,res);
 })
 

@@ -37,10 +37,8 @@ class CategoryController {
     // get category by name
     static getCategoryByName(req,res){
         Category.findOne({
-            _id : req.params.id, 
-            name : req.body.name,
-            groupItem : req.body['groupItem']
-        })
+            name : req.body.name
+        }).populate('groupItem')
             .then(row =>{
                 res.status(200).json({ 
                     msg : 'Category found!',

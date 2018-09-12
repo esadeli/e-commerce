@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const HashPassword = require('../helpers/HashPassword');
 const EmailValidator = require('../helpers/EmailValidator');
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+// const ObjectId = mongoose.Types.ObjectId;
 
 class UserController {
 

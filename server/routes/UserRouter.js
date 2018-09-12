@@ -26,8 +26,8 @@ router.get('/lists',(req,res)=>{
 // Update user information
 // Note: in reality it should be given IsLogin and IsAdmin
 // but in case of testing in Postman the middlewares are revoked
-router.put('/edit/:id',IsLogin,(req,res)=>{
-    UserController.updateUserInformation(req,res);
-})
+// router.put('/edit/:id',IsLogin,(req,res)=>{
+//     UserController.updateUserInformation(req,res);
+// })
 
 module.exports = router

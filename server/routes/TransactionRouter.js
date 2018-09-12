@@ -14,7 +14,7 @@ router.post('/add',IsLogin,(req,res)=>{
 // get list of all transaction
 // Note: in reality it should be given IsLogin and IsAdmin
 // but in case of testing in Postman the middlewares are revoked
-router.get('/lists',(req,res)=>{
+router.get('/lists',IsLogin,(req,res)=>{
     TransactionController.getAllTransaction(req,res);
 })
 
