@@ -9,7 +9,6 @@ const TransactionSchema = new Schema({
         ref : 'User'
     },
     itemsList : [ String ],
-    amount : Number,
     transaction_date : {
         type : Date,
         default : new Date()

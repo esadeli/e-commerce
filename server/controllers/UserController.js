@@ -4,6 +4,8 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const HashPassword = require('../helpers/HashPassword');
 const EmailValidator = require('../helpers/EmailValidator');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 class UserController {
 
@@ -96,6 +98,7 @@ class UserController {
     static getAllUsers(req,res){
         User.find({}).populate('transactionsList')
             .then(rows=>{
+                
                 res.status(200).json({
                     msg : 'List of users',
                     data : rows
