@@ -5,7 +5,9 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/eBelanja',{ useNewUrlParser: true });
+// mongoose.connect('mongodb://localhost:27017/eBelanja',{ useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_USER, { useNewUrlParser : true});
+
 
 
 app.use(express.urlencoded({ extended : false}));
