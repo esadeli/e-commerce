@@ -42,8 +42,10 @@
                     </a>
                     <button data-toggle="modal" v-on:click="logoutFromSite()" >LOGOUT</button>
                 </div>
+                <div v-else>
+                    <button data-toggle="modal" data-target="#loginUser" id="login">LOGIN</button>
+                </div>
         </div>
-        <button data-toggle="modal" data-target="#loginUser" id="login">LOGIN</button>
       </nav>
         
             <div class="container-fluid">
@@ -93,6 +95,10 @@
                                     </div>
                                 </div>
                                 <div class="marginBottom"></div>
+                                    <div v-if="info.length >0 ">
+                                        <div v-if="error.length > 0">
+                                            {{ error }}
+                                        </div>
                                         <div v-for="data in info">
                                             <div class="row">
                                                 <div class ="col-md-3">
@@ -102,7 +108,12 @@
                                                             <div class="card-body">
                                                             <h5 class="card-title">{{ data.name }}</h5>
                                                             <p class="card-text">Price : {{ data.price }}</p>
-                                                            <a href="#" class="btn btn-primary">Order Now</a>
+                                                            <div v-if=" token === '' ">
+                                                                    <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
+                                                                </div>
+                                                                <div v-else> 
+                                                                    <a href="#" class="btn btn-primary">Order Now</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -116,7 +127,12 @@
                                                             <div class="card-body">
                                                             <h5 class="card-title">{{ data.name }}</h5>
                                                             <p class="card-text">Price : {{ data.price }}</p>
-                                                            <a href="#" class="btn btn-primary">Order Now</a>
+                                                            <div v-if=" token === '' ">
+                                                                    <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
+                                                                </div>
+                                                                <div v-else> 
+                                                                    <a href="#" class="btn btn-primary">Order Now</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -130,7 +146,13 @@
                                                             <div class="card-body">
                                                             <h5 class="card-title">{{ data.name }}</h5>
                                                             <p class="card-text">Price : {{ data.price }}</p>
-                                                            <a href="#" class="btn btn-primary">Order Now</a>
+
+                                                            <div v-if=" token === '' ">
+                                                                <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
+                                                            </div>
+                                                            <div v-else> 
+                                                                <a href="#" class="btn btn-primary">Order Now</a>
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -144,7 +166,17 @@
                                                 </div>
                                             </div>        
                                         </div>  
-                                        
+                                    </div>   
+                                    <div v-else>
+                                        Items Sold Out
+                                        <div class="row">
+                                            <div>
+                                                <div class="col-md-12">
+                                                    <img height="50px" width="100%" src="./assets/image/whiteBox.jpg">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div>
                                             <div class="col-md-12">
@@ -219,6 +251,32 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="loginMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <label>You have to login/register first to buy</label>
+                                </div>
+                                <br/>
+                                <br/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <!--
+                                <button type="button" v-on:click="loginToSite()" class="btn btn-primary">Login</button>
+                                -->    
+                            </div>
+                        </div>
+                        </div>
+                    </div>    
+
     <div id="footer">
         <div id="footerContent">
             <p>Copyright: &copy; E-Belanja 2018</p>
@@ -234,12 +292,15 @@
                     infoCategory :[],
                     startPageItems :[],
                     categoryPageItems : [],
-                    route : `http://localhost:3000/items/lists`,
-                    httpMethod : 'GET',
+                    userId : '',
+                    name : '',
                     email : '',
                     password : '',
+                    transactionsList : [],
                     token : localStorage.getItem('token'),
-                    sortedArr : []
+                    sortedArr : [],
+                    detailTransaction :[],
+                    error : '',
             },
             methods :{
                 getCategory : function (input){
@@ -270,12 +331,27 @@
                         }
                     })
                     .then( response =>{
-                        // console.log('Login Nih', response.data.token)
-                        localStorage.setItem('token',response.data.token);
-                        // location.href = "http://localhost:8080/";
+                        let jwttoken = response.data.token;
+                        
+                        // get user credentials
+                        axios({
+                            method : 'GET',
+                            url : 'http://localhost:3000/users/details',
+                            headers : {
+                                token : jwttoken
+                            }
+                        })
+                        .then(user=>{
+
+                            localStorage.setItem('token',jwttoken);
+                        })
+                        .catch(error=>{
+                            self.error = error  
+                        })
+
                     })
                     .catch(error =>{
-                        self.info = error
+                        self.error = error
                     })
                 },
                 logoutFromSite(){
@@ -308,8 +384,8 @@
                 let self = this
                 // console.log('helloooooo')
                 axios({
-                    method : self.httpMethod,
-                    url : self.route
+                    method : 'GET',
+                    url : `http://localhost:3000/items/lists`
                 })
                 .then(response => {
                     // console.log('Hasil-->',response.data)
@@ -318,7 +394,7 @@
                     
                 })
                 .catch(error =>{
-                    self.info = error
+                    self.error = error
                 })
 
                 axios({
@@ -330,7 +406,7 @@
                     self.infoCategory = response.data.data
                 })
                 .catch(error => {
-                    self.infoCategory = error
+                    self.error = error
                 })
             }
         })

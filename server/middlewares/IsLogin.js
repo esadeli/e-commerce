@@ -17,8 +17,12 @@ function IsLogin(req,res,next) {
             }else{
                 let idCheck = ObjectId(decoded.user_id)
                 User.findOne({ _id : idCheck,email : decoded.email })
-                    .then(row =>{
-                        if(row){
+                    .then(user =>{
+                        if(user){
+                            req.id = user._id,
+                            req.name = user.name,
+                            req.email = user.email,
+                            req.transactionsList = user.transactionsList
                             req.decoded = decoded;
                             next();
 

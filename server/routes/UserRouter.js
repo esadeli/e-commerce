@@ -17,10 +17,13 @@ router.post('/login',(req,res)=>{
 })
 
 // List of users 
-// Note: in reality it should be given IsLogin and IsAdmin
-// but in case of testing in Postman the middlewares are revoked
-router.get('/lists',(req,res)=>{
+router.get('/lists',IsLogin,IsAdmin,(req,res)=>{
     UserController.getAllUsers(req,res);
+})
+
+// Get individual User information
+router.get('/details',IsLogin,(req,res)=>{
+    UserController.getCredentials(req,res)
 })
 
 // Update user information

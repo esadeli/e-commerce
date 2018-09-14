@@ -4,7 +4,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const HashPassword = require('../helpers/HashPassword');
 const EmailValidator = require('../helpers/EmailValidator');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 // const ObjectId = mongoose.Types.ObjectId;
 
 class UserController {
@@ -107,6 +107,26 @@ class UserController {
             .catch(err =>{
                 res.status(500).json({ msg : err})
             })
+    }
+
+    // send credentials to client
+    static getCredentials(req,res){
+        console.log('HEADERS', req.id)
+        console.log('HEADERS', req.name)
+        console.log('HEADERS', req.email)
+        console.log('HEADERS', req.transactionsList)
+
+        
+        res.status(200).json({
+            msg : 'User info',
+            data :{
+                id : req.id,
+                name : req.name,
+                email : req.email,
+                transactionsList : req.transactionsList
+            }
+        })
+        
     }
 }
 
