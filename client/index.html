@@ -347,6 +347,9 @@
                             
                             localStorage.setItem('token',jwttoken);
                             self.token = localStorage.getItem('token');
+
+                            // hide the login page
+                            $('#loginUser').modal('hide');
                         })
                         .catch(error=>{
                             self.error = error  
@@ -417,6 +420,9 @@
                         // empty all previous transactions data
                             this.detailTempTransaction = [];
                             this.totalTempTransaction = 0;
+
+                            // close transaction modal
+                            $('#cartModal').modal('hide');
                     })
                     .catch( error =>{
                         self.error = error    
