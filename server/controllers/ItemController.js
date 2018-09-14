@@ -2,7 +2,8 @@
 
 const Item = require('../models/item');
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+// const ObjectId = mongoose.Types.ObjectId; not used in mongoose, objectId automatically convert
+const Category = require('../models/category')
 
 class ItemController {
 
@@ -13,7 +14,7 @@ class ItemController {
         Item.create({ 
             name : req.body.name, 
             price : req.body.price, 
-            categoryInfo : [ObjectId(req.body.category_id)] })
+            categoryInfo : req.body.category_id })
             .then(row =>{
                 res.status(200).json({ 
                     msg : 'Item has been created'
@@ -27,11 +28,20 @@ class ItemController {
     // get lists of item
     static getListItems(req,res){
         Item.find({})
-            .then(rows =>{
-                res.status(200).json({
-                    msg : 'List of items',
-                    data : rows
-                })
+            .then(items =>{
+
+                // get all list category
+                Category.find({})
+                    .then(categories =>{
+                        res.status(200).json({
+                            msg : 'List of all items and categories',
+                            items : items,
+                            categories : categories
+                        })
+                    })
+                    .catch(error =>{
+                        res.status(500).json({ msg : err })
+                    })
             })  
             .catch(err =>{
                 res.status(500).json({ msg : err});
@@ -41,12 +51,14 @@ class ItemController {
     // edit item
     static editItem(req,res){
         let editId = req.params.id;
+        // console.log('REQ BODY-->',req.body)
         Item.findOneAndUpdate({_id : editId},{
             name : req.body.name, 
-            price : req.body.price, 
-            categoryInfo : ObjectId(req.body.category_id) 
+            price : req.body.price,
+            categoryInfo : req.body.categoryInfo 
         })
         .then(row => {
+            // console.log('TEST-->',row)
             res.status(200).json({ msg : 'Item has been updated'})
         })
         .catch(err =>{

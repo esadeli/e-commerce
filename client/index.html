@@ -50,8 +50,10 @@
                 <div class="row">
                         <div class="col-md-3">
                             <h3 class="my-4">Categories</h3>
-                                
-                                    <div v-for ="department in infoCategory.data.data">
+                                    <div class="list-group">
+                                        <button v-on:click="getCategory('all')" class="list-group-item sideBarCustom">All Items</button>
+                                    </div>
+                                    <div v-for ="department in infoCategory">
                                         <div class="list-group">
                                             <button v-on:click="getCategory(department.name)" class="list-group-item sideBarCustom">{{ department.name }}</button>
                                         </div>
@@ -91,8 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="marginBottom"></div>
-                                        
-                                        <div v-for="data in info.data.data">
+                                        <div v-for="data in info">
                                             <div class="row">
                                                 <div class ="col-md-3">
                                                     <div class="itemBox">
@@ -228,20 +229,34 @@
         // get all data
         var app = new Vue({
             el: '#app',
-            data () {
-                return {
+            data : {
                     info: [],
                     infoCategory :[],
-                    route : `http://localhost:3000/categories/lists`,
+                    startPageItems :[],
+                    categoryPageItems : [],
+                    route : `http://localhost:3000/items/lists`,
                     httpMethod : 'GET',
                     email : '',
                     password : '',
-                    token : localStorage.getItem('token')
-                }
+                    token : localStorage.getItem('token'),
+                    sortedArr : []
             },
             methods :{
                 getCategory : function (input){
                     // console.log('TEST--->',input)
+                    if(input==='all'){
+                        this.info = this.startPageItems;
+                    }else{
+
+                        this.categoryPageItems = [];
+                        for(let i = 0; i<this.startPageItems.length;i++){
+                            if(this.startPageItems[i].CategoryName === input){
+                                this.categoryPageItems.push(this.startPageItems[i])
+                            }
+                        }
+                        // console.log(this.categoryPageItems)
+                        this.info = this.categoryPageItems
+                    }
                 },
                 loginToSite(){
                     // console.log(this.email, this.password)
@@ -255,7 +270,7 @@
                         }
                     })
                     .then( response =>{
-                        console.log('Login Nih', response.data.token)
+                        // console.log('Login Nih', response.data.token)
                         localStorage.setItem('token',response.data.token);
                         // location.href = "http://localhost:8080/";
                     })
@@ -266,6 +281,27 @@
                 logoutFromSite(){
                     localStorage.setItem('token','');
                     this.token = '';
+                },
+                getCleanList(rawArray,listCategory){
+
+                    // console.log('RawArray-->',rawArray);
+                    // console.log('List Category-->',listCategory);
+                    let arrayClean = []
+                    for(let i = 0; i < rawArray.length;i++){
+                        // console.log(rawArray[i])
+                        let obj = rawArray[i];
+                        for(let j = 0; j< listCategory.length;j++){
+                            // console.log('TEST',listCategory[j]);
+                            if(obj.categoryInfo === listCategory[j]._id){
+                                obj['CategoryName'] = listCategory[j].name
+                                // console.log(listCategory[j].name)
+                            }
+                        }
+                        // console.log('TEST', obj);
+                        arrayClean.push(obj)
+                    }
+                    this.startPageItems = arrayClean;
+                    this.info = arrayClean;
                 }
             },
             created () {
@@ -276,8 +312,10 @@
                     url : self.route
                 })
                 .then(response => {
-                    // console.log('Hasil-->',response)
-                    self.info = response
+                    // console.log('Hasil-->',response.data)
+                    self.getCleanList(response.data.items,response.data.categories);
+                    // self.info = response.data.items
+                    
                 })
                 .catch(error =>{
                     self.info = error
@@ -288,7 +326,8 @@
                     url : `http://localhost:3000/categories/lists`
                 })
                 .then( response =>{
-                    self.infoCategory = response
+                    // console.log('Category', response.data.data)
+                    self.infoCategory = response.data.data
                 })
                 .catch(error => {
                     self.infoCategory = error
