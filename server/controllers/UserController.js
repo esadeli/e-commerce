@@ -111,11 +111,6 @@ class UserController {
 
     // send credentials to client
     static getCredentials(req,res){
-        console.log('HEADERS', req.id)
-        console.log('HEADERS', req.name)
-        console.log('HEADERS', req.email)
-        console.log('HEADERS', req.transactionsList)
-
         
         res.status(200).json({
             msg : 'User info',

@@ -36,10 +36,11 @@
         </div>
         
         <div class="fontIconMargin">
-                <div v-if= "token !== ''">
+                <div v-if= "nameLengkap !== '' ">
                     <a data-toggle="modal" data-target="#cartModal">
-                            <i class="fas fa-shopping-cart">Your Cart</i>
+                        <i class="fas fa-shopping-cart">Your Cart</i>
                     </a>
+                    <hr/>
                     <button data-toggle="modal" v-on:click="logoutFromSite()" >LOGOUT</button>
                 </div>
                 <div v-else>
@@ -108,11 +109,11 @@
                                                             <div class="card-body">
                                                             <h5 class="card-title">{{ data.name }}</h5>
                                                             <p class="card-text">Price : {{ data.price }}</p>
-                                                            <div v-if=" token === '' ">
+                                                            <div v-if=" nameLengkap === '' ">
                                                                     <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
                                                                 </div>
                                                                 <div v-else> 
-                                                                    <a href="#" class="btn btn-primary">Order Now</a>
+                                                                    <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -127,11 +128,11 @@
                                                             <div class="card-body">
                                                             <h5 class="card-title">{{ data.name }}</h5>
                                                             <p class="card-text">Price : {{ data.price }}</p>
-                                                            <div v-if=" token === '' ">
+                                                            <div v-if=" nameLengkap === '' ">
                                                                     <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
                                                                 </div>
                                                                 <div v-else> 
-                                                                    <a href="#" class="btn btn-primary">Order Now</a>
+                                                                    <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -147,11 +148,11 @@
                                                             <h5 class="card-title">{{ data.name }}</h5>
                                                             <p class="card-text">Price : {{ data.price }}</p>
 
-                                                            <div v-if=" token === '' ">
+                                                            <div v-if=" nameLengkap === '' ">
                                                                 <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
                                                             </div>
                                                             <div v-else> 
-                                                                <a href="#" class="btn btn-primary">Order Now</a>
+                                                                <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
                                                             </div>
                                                             </div>
                                                         </div>
@@ -202,21 +203,18 @@
                     </button>
                     </div>
                     <div class="modal-body">
-                        <div>
-                            Hot Item 1: Price 100.000 IDR
+                        <h5>Hi {{ nameLengkap }} berikut rincian belanjaan kamu: </h5>
+                        <div v-for="buyitem in detailTempTransaction" >
+                            <div>
+                                {{ buyitem.item }} : Price {{ buyitem.price }} IDR
+                            </div>
                         </div>
-                        <br/>
-                        <div>
-                            Hot Item 2: Price 100.000 IDR
-                        </div>
-                        <br/>
-                        <div>
-                            Hot Item 3: Price 100.000 IDR
-                        </div>
+                        <hr/>
+                        <h5>Total: {{ totalTempTransaction }}</h5>
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Buy now</button>
+                    <button v-on:click="createTransaction()" type="button" class="btn btn-primary"><font color="white">Buy Now</font></button>
                     </div>
                 </div>
                 </div>
@@ -293,18 +291,18 @@
                     startPageItems :[],
                     categoryPageItems : [],
                     userId : '',
-                    name : '',
+                    nameLengkap : '',
                     email : '',
                     password : '',
                     transactionsList : [],
                     token : localStorage.getItem('token'),
                     sortedArr : [],
-                    detailTransaction :[],
+                    detailTempTransaction :[],
+                    totalTempTransaction : 0,
                     error : '',
             },
             methods :{
                 getCategory : function (input){
-                    // console.log('TEST--->',input)
                     if(input==='all'){
                         this.info = this.startPageItems;
                     }else{
@@ -315,7 +313,6 @@
                                 this.categoryPageItems.push(this.startPageItems[i])
                             }
                         }
-                        // console.log(this.categoryPageItems)
                         this.info = this.categoryPageItems
                     }
                 },
@@ -342,8 +339,14 @@
                             }
                         })
                         .then(user=>{
-
+                            self.userId = user.data.data.id
+                            self.nameLengkap = user.data.data.name
+                            
+                            // empty the password
+                            self.password = ''
+                            
                             localStorage.setItem('token',jwttoken);
+                            self.token = localStorage.getItem('token');
                         })
                         .catch(error=>{
                             self.error = error  
@@ -355,42 +358,80 @@
                     })
                 },
                 logoutFromSite(){
+                    // empty all credentials
                     localStorage.setItem('token','');
                     this.token = '';
+                    this.userId = '';
+                    this.nameLengkap = '';
+
+                    // empty all related transactions data
+                    this.detailTempTransaction = [];
+                    this.totalTempTransaction = 0;
                 },
                 getCleanList(rawArray,listCategory){
 
-                    // console.log('RawArray-->',rawArray);
-                    // console.log('List Category-->',listCategory);
                     let arrayClean = []
                     for(let i = 0; i < rawArray.length;i++){
-                        // console.log(rawArray[i])
                         let obj = rawArray[i];
                         for(let j = 0; j< listCategory.length;j++){
-                            // console.log('TEST',listCategory[j]);
                             if(obj.categoryInfo === listCategory[j]._id){
                                 obj['CategoryName'] = listCategory[j].name
-                                // console.log(listCategory[j].name)
                             }
                         }
-                        // console.log('TEST', obj);
                         arrayClean.push(obj)
                     }
                     this.startPageItems = arrayClean;
                     this.info = arrayClean;
+                },
+                getIndividualOrder(item,price){
+
+                    // this.countTotalOrder()
+                    if(this.token !== ''){
+                        let obj = {}
+                        obj['item'] = item;
+                        obj['price'] = Number(price);
+
+                        // add app to total sum
+                        this.totalTempTransaction = this.totalTempTransaction + Number(price);
+                        this.detailTempTransaction.push(obj)
+                    }else{
+                        // tem
+                        this.detailTempTransaction = [];
+                    }
+                },
+                createTransaction(){
+                    let self = this;
+
+                    axios({
+                        method : 'POST',
+                        url : 'http://localhost:3000/transactions/add',
+                        headers : {
+                            token : self.token
+                        },
+                        data :{
+                            itemId : self.detailTempTransaction
+                        }
+                    })
+                    .then( transaction =>{
+                        // if the transaction is successful and user still login
+                        // empty all previous transactions data
+                            this.detailTempTransaction = [];
+                            this.totalTempTransaction = 0;
+                    })
+                    .catch( error =>{
+                        self.error = error    
+                    })
                 }
             },
             created () {
-                let self = this
-                // console.log('helloooooo')
+                let self = this;
                 axios({
                     method : 'GET',
                     url : `http://localhost:3000/items/lists`
                 })
                 .then(response => {
-                    // console.log('Hasil-->',response.data)
+
                     self.getCleanList(response.data.items,response.data.categories);
-                    // self.info = response.data.items
                     
                 })
                 .catch(error =>{
@@ -402,7 +443,6 @@
                     url : `http://localhost:3000/categories/lists`
                 })
                 .then( response =>{
-                    // console.log('Category', response.data.data)
                     self.infoCategory = response.data.data
                 })
                 .catch(error => {
