@@ -20,6 +20,13 @@ const CategoryRouter = require('./routes/CategoryRouter');
 const ItemRouter = require('./routes/ItemRouter');
 const TransactionRouter = require('./routes/TransactionRouter');
 
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log(`Connected ebelanja db!`);
+});
+
 //----> Call your routes here
 app.use('/users',UserRouter);
 app.use('/categories',CategoryRouter);
@@ -31,7 +38,7 @@ app.get('/',(req,res)=>{
 });
 
 // app.listen(process.env.PORT || 3000, ()=> { 
-//     console.log('You are listening to PORT 3000')
+//     console.log('You are listening to PORT')
 // });
 app.listen(3000, ()=>{
     console.log('You are listening to PORT 3000')
