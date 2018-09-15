@@ -16,58 +16,58 @@
 </head>
 <body>
     <div id="app">
-    <nav class="navbar navbar-expand-sm bg-light navBarCustom">
-        <!-- Links -->
-        <div class="container">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link navBarItem" href="JavaScript:Void(0)">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link navBarItem" href="JavaScript:Void(0)">Flash Deal</a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link navBarItem" href="JavaScript:Void(0)">Event</a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link navBarItem" href="JavaScript:Void(0)">Your style</a>
-                </li>
-            </ul>
-        </div>
-        
-        <div class="fontIconMargin">
-                <div v-if= "nameLengkap !== '' ">
-                    <a data-toggle="modal" data-target="#cartModal">
-                        <i class="fas fa-shopping-cart">Your Cart</i>
-                    </a>
-                    <hr/>
-                    <button data-toggle="modal" v-on:click="logoutFromSite()" >LOGOUT</button>
-                </div>
-                <div v-else>
-                    <button data-toggle="modal" data-target="#loginUser" id="login">LOGIN</button>
-                </div>
-        </div>
-      </nav>
-        
+        <nav class="navbar navbar-expand-sm bg-light navBarCustom">
+            <!-- Links -->
+            <div class="container">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link navBarItem" href="JavaScript:Void(0)">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navBarItem" href="JavaScript:Void(0)">Flash Deal</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link navBarItem" href="JavaScript:Void(0)">Event</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link navBarItem" href="JavaScript:Void(0)">Your style</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="fontIconMargin">
+                    <div v-if= "nameLengkap !== '' ">
+                        <a data-toggle="modal" data-target="#cartModal">
+                            <i class="fas fa-shopping-cart">Your Cart</i>
+                        </a>
+                        <hr/>
+                        <button data-toggle="modal" v-on:click="logoutFromSite()" >LOGOUT</button>
+                    </div>
+                    <div v-else>
+                        <button data-toggle="modal" data-target="#loginUser" id="login">LOGIN</button>
+                    </div>
+            </div>
+        </nav> 
             <div class="container-fluid">
                 <div class="row">
                         <div class="col-md-3">
-                            <h3 class="my-4">Categories</h3>
+                            <div class="navBarFixedLeft">
+                                <h3 class="my-4">Categories</h3>
+                                <div class="list-group">
+                                    <button v-on:click="getCategory('all')" class="list-group-item sideBarCustom">All Items</button>
+                                </div>
+                                <div v-for ="department in infoCategory">
                                     <div class="list-group">
-                                        <button v-on:click="getCategory('all')" class="list-group-item sideBarCustom">All Items</button>
+                                        <button v-on:click="getCategory(department.name)" class="list-group-item sideBarCustom">{{ department.name }}</button>
                                     </div>
-                                    <div v-for ="department in infoCategory">
-                                        <div class="list-group">
-                                            <button v-on:click="getCategory(department.name)" class="list-group-item sideBarCustom">{{ department.name }}</button>
-                                        </div>
-                                    </div>    
-                                    
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-9">
                             <div class="marginTop">
                                 <div class="row">
                                     <div class="container">
-                                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                            <div id="carouselExampleControls" class="carousel slide carouselMarginCustom" data-ride="carousel">
                                                 <div class="carousel-inner">
                                                     <div class="carousel-item active carouselCustom">
                                                         <img class="d-block w-100" src="./assets/image/japanese-landscape2.jpg" alt="First slide">

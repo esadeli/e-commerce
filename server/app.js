@@ -5,8 +5,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost:27017/eBelanja',{ useNewUrlParser: true });
-mongoose.connect(process.env.MONGO_USER, { useNewUrlParser : true});
+mongoose.connect('mongodb://localhost:27017/eBelanja',{ useNewUrlParser: true });
+// mongoose.connect(process.env.MONGO_USER, { useNewUrlParser : true});
 
 
 
@@ -30,6 +30,9 @@ app.get('/',(req,res)=>{
     console.log('Base set up OK')
 });
 
-app.listen(3000, ()=> { 
+// app.listen(process.env.PORT || 3000, ()=> { 
+//     console.log('You are listening to PORT 3000')
+// });
+app.listen(3000, ()=>{
     console.log('You are listening to PORT 3000')
-});
+})

@@ -6,10 +6,25 @@
 
 .navBarCustom {
     background-image: linear-gradient(#e91e63,white,#f8bbd0);
+    position: fixed; 
+    width: 100%;
+    z-index: 1; 
+    top: 10; 
 }
 
 .navBarItem {
     color: black;
+}
+
+.navBarFixedLeft {
+    height: 100%; 
+    width: 280px; 
+    position: fixed; 
+    margin-top: 40px;
+    z-index: 1; 
+    top: 10; 
+    left: 20;
+    overflow-x: hidden; 
 }
 
 .sideBarCustom {
@@ -27,6 +42,10 @@
 .carouselCustom {
     width: 1000px;
     height: 450px;
+}
+
+.carouselMarginCustom {
+    margin-top: 50px;
 }
 
 .fontIconMargin {
