@@ -19,5 +19,4 @@ Vue.component('left-nav-bar',{
         </div>
 
         `
-    
 })
