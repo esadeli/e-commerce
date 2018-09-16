@@ -202,6 +202,16 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <div v-if="error.length !== 0">
+                                <div class="alert alert-danger alert-dismissible fade show">
+                                    <strong>Error!</strong> {{ error }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <br/>
+                                    <br/>
+                                </div>
+                            </div>
                             <div>
                                 <label>Email</label>
                                 <input v-model="email"  type="text" placeholder="email">
@@ -302,7 +312,7 @@
 
                     })
                     .catch(error =>{
-                        self.error = error
+                        self.error = JSON.stringify(error.response.data.msg)
                     })
                 },
                 logoutFromSite(){

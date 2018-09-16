@@ -70,24 +70,28 @@ class UserController {
         // get back user's information
         User.findOne({ email: req.body.email, password : hash })
         .then( row =>{
-              
+            // console.log('ROW-->',row)  
             // if exists get jwt token
-            jwt.sign({
-                user_id : row._id,
-                name : row.name,
-                email : row.email,
-                role : row.role
-
-            },process.env.SECRETTOKEN,(error,token)=>{
-                if(error){
-                    res.status(401).json({ msg : 'Invalid email or password' })
-                }else{
-                    res.status(200).json({ 
-                        msg : 'Login success',
-                        token : token
-                    })
-                }
-            })
+            if(row){
+                jwt.sign({
+                    user_id : row._id,
+                    name : row.name,
+                    email : row.email,
+                    role : row.role
+    
+                },process.env.SECRETTOKEN,(error,token)=>{
+                    if(error){
+                        res.status(401).json({ msg : 'Invalid email or password' })
+                    }else{
+                        res.status(200).json({ 
+                            msg : 'Login success',
+                            token : token
+                        })
+                    }
+                })
+            }else{
+                res.status(401).json({ msg : 'Invalid email or password'})
+            }
         })
         .catch (err =>{
             res.status(500).json({ msg : err});
