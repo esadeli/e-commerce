@@ -15,6 +15,7 @@
     <script src="./lib/leftNavBar.js"></script>
     <script src="./lib/modalLoginMessage.js"></script>
     <script src="./lib/footer.js"></script>
+    <script src="./lib/modalLoginForm.js"></script>
     <base href="/">
     <title>E-Belanja</title>
 </head>
@@ -192,6 +193,8 @@
             </div>
 
             <!-- Modal login -->
+            <modal-login-form @result-user-id="getUserId" @result-name-lengkap="getNameLengkap" @result-token="getToken"></modal-login-form>
+            <!--
             <div class="modal fade" id="loginUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -230,6 +233,7 @@
                     </div>
                 </div>
             </div>
+            -->
 
             <!-- Modal Login Message-->
             <modal-login-message></modal-login-message>
@@ -250,13 +254,23 @@
                     email : '',
                     password : '',
                     transactionsList : [],
-                    token : localStorage.getItem('token'),
+                    token : '',//localStorage.getItem('token'),
                     sortedArr : [],
                     detailTempTransaction :[],
                     totalTempTransaction : 0,
                     error : '',
             },
             methods :{
+                // getter method from child login activity
+                getToken : function (input){
+                    this.token = input;
+                },
+                getUserId : function(input){
+                    this.userId = input;
+                },    
+                getNameLengkap : function(input){
+                    this.nameLengkap = input;
+                },
                 getCategory : function (input){
                     if(input==='all'){
                         this.info = this.startPageItems;
@@ -271,50 +285,50 @@
                         this.info = this.categoryPageItems
                     }
                 },
-                loginToSite(){
-                    // console.log(this.email, this.password)
-                    let self = this
-                    axios({
-                        method : 'POST',
-                        url : 'http://localhost:3000/users/login',
-                        data : {
-                            email : self.email,
-                            password : self.password
-                        }
-                    })
-                    .then( response =>{
-                        let jwttoken = response.data.token;
+                // loginToSite(){
+                //     // console.log(this.email, this.password)
+                //     let self = this
+                //     axios({
+                //         method : 'POST',
+                //         url : 'http://localhost:3000/users/login',
+                //         data : {
+                //             email : self.email,
+                //             password : self.password
+                //         }
+                //     })
+                //     .then( response =>{
+                //         let jwttoken = response.data.token;
                         
-                        // get user credentials
-                        axios({
-                            method : 'GET',
-                            url : 'http://localhost:3000/users/details',
-                            headers : {
-                                token : jwttoken
-                            }
-                        })
-                        .then(user=>{
-                            self.userId = user.data.data.id
-                            self.nameLengkap = user.data.data.name
+                //         // get user credentials
+                //         axios({
+                //             method : 'GET',
+                //             url : 'http://localhost:3000/users/details',
+                //             headers : {
+                //                 token : jwttoken
+                //             }
+                //         })
+                //         .then(user=>{
+                //             self.userId = user.data.data.id
+                //             self.nameLengkap = user.data.data.name
                             
-                            // empty the password
-                            self.password = ''
+                //             // empty the password
+                //             self.password = ''
                             
-                            localStorage.setItem('token',jwttoken);
-                            self.token = localStorage.getItem('token');
+                //             localStorage.setItem('token',jwttoken);
+                //             self.token = localStorage.getItem('token');
 
-                            // hide the login page
-                            $('#loginUser').modal('hide');
-                        })
-                        .catch(error=>{
-                            self.error = error  
-                        })
+                //             // hide the login page
+                //             $('#loginUser').modal('hide');
+                //         })
+                //         .catch(error=>{
+                //             self.error = error  
+                //         })
 
-                    })
-                    .catch(error =>{
-                        self.error = JSON.stringify(error.response.data.msg)
-                    })
-                },
+                //     })
+                //     .catch(error =>{
+                //         self.error = JSON.stringify(error.response.data.msg)
+                //     })
+                // },
                 logoutFromSite(){
                     // empty all credentials
                     localStorage.setItem('token','');
@@ -344,6 +358,8 @@
                 getIndividualOrder(item,price){
 
                     // this.countTotalOrder()
+                    // console.log('TOKEN-->',this.token)
+                    // console.log('GET ORDER-->', item,price)
                     if(this.token !== ''){
                         let obj = {}
                         obj['item'] = item;
