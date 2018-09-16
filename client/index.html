@@ -27,26 +27,29 @@
             <left-nav-bar></left-nav-bar>
             
             <div class="fontIconMargin">
-                    <div v-if= "nameLengkap !== '' ">
-                        <div>
-                            <a data-toggle="modal" data-target="#cartModal">
-                                    <i class="fas fa-shopping-cart">Your Cart</i>
-                            </a>
-                            <button data-toggle="modal" v-on:click="logoutFromSite()" >LOGOUT</button>
-                        </div>
+                <div v-if= "nameLengkap !== '' ">
+                    <div>
+                        <a data-toggle="modal" data-target="#cartModal">
+                                <i class="fas fa-shopping-cart">Your Cart</i>
+                        </a>
+                        <button data-toggle="modal" v-on:click="logoutFromSite()" >LOGOUT</button>
                     </div>
-                    <div v-else>
-                        <button data-toggle="modal" data-target="#loginUser" id="login">LOGIN</button>
-                    </div>
+                </div>
+                <div v-else>
+                    <button data-toggle="modal" data-target="#loginUser" id="login">LOGIN</button>
+                </div>
             </div>
         </nav> 
         <div class="container-fluid">
             <div class="row">
-                <list-categories @result-info="getInfo"></list-categories>
+                <list-categories @result-info="getInfo" @result-list-item-error="getErrorList"></list-categories>
                 
                 <div class="col-md-9">
                     <div class="marginTop">
                         <carousel-e-belanja></carousel-e-belanja>  
+                        <!--
+                        <list-items @result-total-temp-transaction="getTotalTempTransaction" @result-detail-temp-transaction="getDetailTempTransaction" v-bind:info="info" v-bind:errorList="errorList" v-bind:token="token"></list-items>   
+                        -->
                         <div>    
                             <!--set a space between carousel and list item -->                                                  
                             <div class="marginBottom"></div>
@@ -197,11 +200,11 @@
                     nameLengkap : '',
                     email : '',
                     password : '',
-                    transactionsList : [],
                     token : '',//localStorage.getItem('token'),
                     detailTempTransaction :[],
                     totalTempTransaction : 0,
                     error : '',
+                    errorList : '', // error related to list items 
             },
             methods :{
                 // getter method from child login activity
@@ -215,7 +218,16 @@
                     this.nameLengkap = input;
                 },
                 getInfo : function(input){
-                    this.info = input
+                    this.info = input;
+                },
+                getErrorList : function(input){
+                    this.errorList = input;
+                },
+                getDetailTempTransaction : function(input){
+                    this.detailTempTransaction = input;  
+                },
+                getTotalTempTransaction : function(input){
+                    this.totalTempTransaction = input;
                 },
                 logoutFromSite(){
                     // empty all credentials

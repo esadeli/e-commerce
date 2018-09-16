@@ -19,7 +19,8 @@ Vue.component('list-categories',{
         return {
             infoCategory :[],
             startPageItems : [],  
-            categoryPageItems : [],          
+            categoryPageItems : [], 
+            error : ''         
         }
     },
     methods : {
@@ -37,7 +38,6 @@ Vue.component('list-categories',{
             }
             this.startPageItems = arrayClean;
             this.info = arrayClean;
-            console.log('list item---->',this.info)
             this.$emit('result-info',this.info);
         },
         getCategory : function (input){
@@ -52,7 +52,6 @@ Vue.component('list-categories',{
                     }
                 }
                 this.info = this.categoryPageItems
-                console.log('list item categorized', this.info)
                 this.$emit('result-info',this.info)
             }
         }
@@ -70,6 +69,7 @@ Vue.component('list-categories',{
         })
         .catch(error =>{
             self.error = error
+            this.$emit('result-list-item-error',self.error)
         })
 
         axios({
@@ -78,7 +78,6 @@ Vue.component('list-categories',{
         })
         .then( response =>{
             self.infoCategory = response.data.data
-            console.log('List of categories-->',self.infoCategory)
             this.$emit('result-info-category',self.infoCategory)
         })
         .catch(error => {
