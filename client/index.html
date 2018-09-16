@@ -16,6 +16,7 @@
     <script src="./lib/modalLoginMessage.js"></script>
     <script src="./lib/footer.js"></script>
     <script src="./lib/modalLoginForm.js"></script>
+    <script src="./lib/listCategory.js"></script>
     <base href="/">
     <title>E-Belanja</title>
 </head>
@@ -41,29 +42,14 @@
         </nav> 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="navBarFixedLeft">
-                        <h3 class="my-4">Categories</h3>
-                        <div class="list-group">
-                            <button v-on:click="getCategory('all')" class="list-group-item sideBarCustom">All Items</button>
-                        </div>
-                        <div v-for ="department in infoCategory">
-                            <div class="list-group">
-                                <button v-on:click="getCategory(department.name)" class="list-group-item sideBarCustom">{{ department.name }}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <list-categories @result-info="getInfo"></list-categories>
+                
                 <div class="col-md-9">
                     <div class="marginTop">
                         <carousel-e-belanja></carousel-e-belanja>  
-                        <!--set a space between carousel and list item -->                                                  
-                        <div class="row">
-                            <div class="col-md-12">
-                                
-                            </div>
-                        </div>
-                        <div class="marginBottom"></div>
+                        <div>    
+                            <!--set a space between carousel and list item -->                                                  
+                            <div class="marginBottom"></div>
                             <div v-if="info.length >0 ">
                                 <div v-if="error.length > 0">
                                     {{ error }}
@@ -157,10 +143,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>   
                     </div>
                 </div>
-            </div>  
+            </div>
+        </div>  
             
             
             <!-- The Modal -->
@@ -194,46 +181,6 @@
 
             <!-- Modal login -->
             <modal-login-form @result-user-id="getUserId" @result-name-lengkap="getNameLengkap" @result-token="getToken"></modal-login-form>
-            <!--
-            <div class="modal fade" id="loginUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div v-if="error.length !== 0">
-                                <div class="alert alert-danger alert-dismissible fade show">
-                                    <strong>Error!</strong> {{ error }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <br/>
-                                    <br/>
-                                </div>
-                            </div>
-                            <div>
-                                <label>Email</label>
-                                <input v-model="email"  type="text" placeholder="email">
-                            </div>
-                            <br/>
-                            <div>
-                                <label>Password</label>
-                                <input v-model="password" type="password" placeholder="password">
-                            </div>
-                            <br/>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" v-on:click="loginToSite()" class="btn btn-primary">Login</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
 
             <!-- Modal Login Message-->
             <modal-login-message></modal-login-message>
@@ -246,16 +193,12 @@
             el: '#app',
             data : {
                     info: [],
-                    infoCategory :[],
-                    startPageItems :[],
-                    categoryPageItems : [],
                     userId : '',
                     nameLengkap : '',
                     email : '',
                     password : '',
                     transactionsList : [],
                     token : '',//localStorage.getItem('token'),
-                    sortedArr : [],
                     detailTempTransaction :[],
                     totalTempTransaction : 0,
                     error : '',
@@ -271,64 +214,9 @@
                 getNameLengkap : function(input){
                     this.nameLengkap = input;
                 },
-                getCategory : function (input){
-                    if(input==='all'){
-                        this.info = this.startPageItems;
-                    }else{
-
-                        this.categoryPageItems = [];
-                        for(let i = 0; i<this.startPageItems.length;i++){
-                            if(this.startPageItems[i].CategoryName === input){
-                                this.categoryPageItems.push(this.startPageItems[i])
-                            }
-                        }
-                        this.info = this.categoryPageItems
-                    }
+                getInfo : function(input){
+                    this.info = input
                 },
-                // loginToSite(){
-                //     // console.log(this.email, this.password)
-                //     let self = this
-                //     axios({
-                //         method : 'POST',
-                //         url : 'http://localhost:3000/users/login',
-                //         data : {
-                //             email : self.email,
-                //             password : self.password
-                //         }
-                //     })
-                //     .then( response =>{
-                //         let jwttoken = response.data.token;
-                        
-                //         // get user credentials
-                //         axios({
-                //             method : 'GET',
-                //             url : 'http://localhost:3000/users/details',
-                //             headers : {
-                //                 token : jwttoken
-                //             }
-                //         })
-                //         .then(user=>{
-                //             self.userId = user.data.data.id
-                //             self.nameLengkap = user.data.data.name
-                            
-                //             // empty the password
-                //             self.password = ''
-                            
-                //             localStorage.setItem('token',jwttoken);
-                //             self.token = localStorage.getItem('token');
-
-                //             // hide the login page
-                //             $('#loginUser').modal('hide');
-                //         })
-                //         .catch(error=>{
-                //             self.error = error  
-                //         })
-
-                //     })
-                //     .catch(error =>{
-                //         self.error = JSON.stringify(error.response.data.msg)
-                //     })
-                // },
                 logoutFromSite(){
                     // empty all credentials
                     localStorage.setItem('token','');
@@ -340,26 +228,8 @@
                     this.detailTempTransaction = [];
                     this.totalTempTransaction = 0;
                 },
-                getCleanList(rawArray,listCategory){
-
-                    let arrayClean = []
-                    for(let i = 0; i < rawArray.length;i++){
-                        let obj = rawArray[i];
-                        for(let j = 0; j< listCategory.length;j++){
-                            if(obj.categoryInfo === listCategory[j]._id){
-                                obj['CategoryName'] = listCategory[j].name
-                            }
-                        }
-                        arrayClean.push(obj)
-                    }
-                    this.startPageItems = arrayClean;
-                    this.info = arrayClean;
-                },
                 getIndividualOrder(item,price){
 
-                    // this.countTotalOrder()
-                    // console.log('TOKEN-->',this.token)
-                    // console.log('GET ORDER-->', item,price)
                     if(this.token !== ''){
                         let obj = {}
                         obj['item'] = item;
@@ -369,7 +239,7 @@
                         this.totalTempTransaction = this.totalTempTransaction + Number(price);
                         this.detailTempTransaction.push(obj)
                     }else{
-                        // tem
+                        // set detail transaction to be always empty when there's no token
                         this.detailTempTransaction = [];
                     }
                 },
@@ -399,32 +269,6 @@
                         self.error = error    
                     })
                 }
-            },
-            created () {
-                let self = this;
-                axios({
-                    method : 'GET',
-                    url : `http://localhost:3000/items/lists`
-                })
-                .then(response => {
-
-                    self.getCleanList(response.data.items,response.data.categories);
-                    
-                })
-                .catch(error =>{
-                    self.error = error
-                })
-
-                axios({
-                    method : 'GET',
-                    url : `http://localhost:3000/categories/lists`
-                })
-                .then( response =>{
-                    self.infoCategory = response.data.data
-                })
-                .catch(error => {
-                    self.error = error
-                })
             }
         })
     </script>
