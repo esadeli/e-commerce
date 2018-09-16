@@ -35,109 +35,94 @@
                     </div>
             </div>
         </nav> 
-            <div class="container-fluid">
-                <div class="row">
-                        <div class="col-md-3">
-                            <div class="navBarFixedLeft">
-                                <h3 class="my-4">Categories</h3>
-                                <div class="list-group">
-                                    <button v-on:click="getCategory('all')" class="list-group-item sideBarCustom">All Items</button>
-                                </div>
-                                <div v-for ="department in infoCategory">
-                                    <div class="list-group">
-                                        <button v-on:click="getCategory(department.name)" class="list-group-item sideBarCustom">{{ department.name }}</button>
-                                    </div>
-                                </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="navBarFixedLeft">
+                        <h3 class="my-4">Categories</h3>
+                        <div class="list-group">
+                            <button v-on:click="getCategory('all')" class="list-group-item sideBarCustom">All Items</button>
+                        </div>
+                        <div v-for ="department in infoCategory">
+                            <div class="list-group">
+                                <button v-on:click="getCategory(department.name)" class="list-group-item sideBarCustom">{{ department.name }}</button>
                             </div>
                         </div>
-                        <div class="col-md-9">
-                            <div class="marginTop">
-                                <carousel-e-belanja></carousel-e-belanja>  
-                                <!--set a space between carousel and list item -->                                                  
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        
-                                    </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="marginTop">
+                        <carousel-e-belanja></carousel-e-belanja>  
+                        <!--set a space between carousel and list item -->                                                  
+                        <div class="row">
+                            <div class="col-md-12">
+                                
+                            </div>
+                        </div>
+                        <div class="marginBottom"></div>
+                            <div v-if="info.length >0 ">
+                                <div v-if="error.length > 0">
+                                    {{ error }}
                                 </div>
-                                <div class="marginBottom"></div>
-                                    <div v-if="info.length >0 ">
-                                        <div v-if="error.length > 0">
-                                            {{ error }}
-                                        </div>
-                                        <div v-for="data in info">
-                                            <div class="row">
-                                                <div class ="col-md-3">
-                                                    <div class="itemBox">
-                                                        <div class="card" style="width: 18rem;">
-                                                            <img class="card-img-top img-fluid" src="./assets/image/asian_casual_fashion03.jpg" alt="Card image cap">
-                                                            <div class="card-body">
-                                                            <h5 class="card-title">{{ data.name }}</h5>
-                                                            <p class="card-text">Price : {{ data.price }}</p>
-                                                            <div v-if=" nameLengkap === '' ">
-                                                                    <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
-                                                                </div>
-                                                                <div v-else> 
-                                                                    <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
-                                                                </div>
-                                                            </div>
+                                <div v-for="data in info">
+                                    <div class="row">
+                                        <div class ="col-md-3">
+                                            <div class="itemBox">
+                                                <div class="card" style="width: 18rem;">
+                                                    <img class="card-img-top img-fluid" src="./assets/image/asian_casual_fashion03.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ data.name }}</h5>
+                                                        <p class="card-text">Price : {{ data.price }}</p>
+                                                        
+                                                        <div v-if=" nameLengkap === '' ">
+                                                            <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                </div>
-                                                <div class ="col-md-3">
-                                                    <div class="itemBox">
-                                                        <div class="card" style="width: 18rem;">
-                                                            <img class="card-img-top img-fluid" src="./assets/image/japan-casual-02.jpg" alt="Card image cap">
-                                                            <div class="card-body">
-                                                            <h5 class="card-title">{{ data.name }}</h5>
-                                                            <p class="card-text">Price : {{ data.price }}</p>
-                                                            <div v-if=" nameLengkap === '' ">
-                                                                    <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
-                                                                </div>
-                                                                <div v-else> 
-                                                                    <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    </div>
-                                                <div class ="col-md-3">
-                                                    <div class="itemBox">
-                                                        <div class="card" style="width: 18rem;">
-                                                            <img height ="430" class="card-img-top" src="./assets/image/japan-casual01.jpg" alt="Card image cap">
-                                                            <div class="card-body">
-                                                            <h5 class="card-title">{{ data.name }}</h5>
-                                                            <p class="card-text">Price : {{ data.price }}</p>
-
-                                                            <div v-if=" nameLengkap === '' ">
-                                                                <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
-                                                            </div>
-                                                            <div v-else> 
-                                                                <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
-                                                            </div>
-                                                            </div>
+                                                        <div v-else> 
+                                                            <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div>
-                                                    <div class="col-md-12">
-                                                        <img height="40px" width="100%" src="./assets/image/whiteBox.jpg">
+                                        </div>
+                                        <!-- set a white space between item display-->
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class ="col-md-3">
+                                            <div class="itemBox">
+                                                <div class="card" style="width: 18rem;">
+                                                    <img class="card-img-top img-fluid" src="./assets/image/japan-casual-02.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ data.name }}</h5>
+                                                        <p class="card-text">Price : {{ data.price }}</p>
+                                                        
+                                                        <div v-if=" nameLengkap === '' ">
+                                                            <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
+                                                        </div>
+                                                        <div v-else> 
+                                                            <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>        
-                                        </div>  
-                                    </div>   
-                                    <div v-else>
-                                        Items Sold Out
-                                        <div class="row">
-                                            <div>
-                                                <div class="col-md-12">
-                                                    <img height="50px" width="100%" src="./assets/image/whiteBox.jpg">
+                                            </div>
+                                        </div>
+                                        <!-- set a white space between item display-->
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class ="col-md-3">
+                                            <div class="itemBox">
+                                                <div class="card" style="width: 18rem;">
+                                                    <img height ="430" class="card-img-top" src="./assets/image/japan-casual01.jpg" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ data.name }}</h5>
+                                                        <p class="card-text">Price : {{ data.price }}</p>
+
+                                                        <div v-if=" nameLengkap === '' ">
+                                                            <a data-toggle="modal" data-target="#loginMessage" class="btn btn-primary"><font color="white">Order Now</font></a>    
+                                                        </div>
+                                                        <div v-else> 
+                                                            <a v-on:click="getIndividualOrder(data.name,data.price)" class="btn btn-primary"><font color="white">Order Now</font></a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,13 +130,32 @@
                                     <div class="row">
                                         <div>
                                             <div class="col-md-12">
-                                                <img height="30px" width="100%" src="./assets/image/whiteBox.jpg">
+                                                <img height="40px" width="100%" src="./assets/image/whiteBox.jpg">
                                             </div>
+                                        </div>
+                                    </div>        
+                                </div>  
+                            </div>   
+                            <div v-else>
+                                Items Sold Out
+                                <div class="row">
+                                    <div>
+                                        <div class="col-md-12">
+                                            <img height="50px" width="100%" src="./assets/image/whiteBox.jpg">
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div>
+                                    <div class="col-md-12">
+                                        <img height="30px" width="100%" src="./assets/image/whiteBox.jpg">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
             </div>  
             
             
@@ -159,39 +163,40 @@
             <!-- Modal Cart-->
             <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Your cart</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body">
-                        <h5>Hi {{ nameLengkap }} berikut rincian belanjaan kamu: </h5>
-                        <div v-for="buyitem in detailTempTransaction" >
-                            <div>
-                                {{ buyitem.item }} : Price {{ buyitem.price }} IDR
-                            </div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Your cart</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <hr/>
-                        <h5>Total: {{ totalTempTransaction }}</h5>
+                        <div class="modal-body">
+                            <h5>Hi {{ nameLengkap }} berikut rincian belanjaan kamu: </h5>
+                            <div v-for="buyitem in detailTempTransaction" >
+                                <div>
+                                    {{ buyitem.item }} : Price {{ buyitem.price }} IDR
+                                </div>
+                            </div>
+                            <hr/>
+                            <h5>Total: {{ totalTempTransaction }}</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button v-on:click="createTransaction()" type="button" class="btn btn-primary"><font color="white">Buy Now</font></button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button v-on:click="createTransaction()" type="button" class="btn btn-primary"><font color="white">Buy Now</font></button>
-                    </div>
-                </div>
                 </div>
             </div>
 
+            <!-- Modal login -->
             <div class="modal fade" id="loginUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <div>
@@ -210,17 +215,17 @@
                             <button type="button" v-on:click="loginToSite()" class="btn btn-primary">Login</button>
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
 
                 <div class="modal fade" id="loginMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -236,8 +241,8 @@
                                 -->    
                             </div>
                         </div>
-                        </div>
-                    </div>    
+                    </div>
+                </div>    
 
     <div id="footer">
         <div id="footerContent">
