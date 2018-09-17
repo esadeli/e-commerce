@@ -35,6 +35,7 @@ app.use('/transactions',TransactionRouter);
 
 app.get('/',(req,res)=>{
     console.log('Base set up OK')
+    res.send('OK')// penyebab error mlab jika tidak dipasang
 });
 
 // app.listen(process.env.PORT || 3000, ()=> { 
