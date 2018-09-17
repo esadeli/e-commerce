@@ -28,7 +28,7 @@
             <left-nav-bar></left-nav-bar>
             
             <div class="fontIconMargin">
-                <div v-if= "nameLengkap !== '' ">
+                <div v-if= "namelengkap !== '' ">
                     <div>
                         <a data-toggle="modal" data-target="#cartModal">
                                 <i class="fas fa-shopping-cart">Your Cart</i>
@@ -49,16 +49,20 @@
                     <div class="marginTop">
                         <carousel-e-belanja></carousel-e-belanja>  
                         
-                        <list-items @result-total-temp-transaction="getTotalTempTransaction" @result-detail-temp-transaction="getDetailTempTransaction" v-bind:info="info" v-bind:errorlist="errorList" v-bind:token="token"></list-items>   
+                        <list-items @result-total-temp-transaction="getTotalTempTransaction" @result-detail-temp-transaction="getDetailTempTransaction" v-bind:info="info" v-bind:errorlist="errorList" v-bind:namelengkap="namelengkap" v-bind:token="token"></list-items>   
                         
                     </div>
                 </div>
             </div>
         </div>  
-            
+
             
             <!-- The Modal -->
             <!-- Modal Cart-->
+            <!--
+            <modal-transaction @result-detail-temp-transaction="getDetailTempTransaction" @result-total-temp-transaction="getTotalTempTransaction" ></modal-transaction>
+            -->
+            
             <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -69,14 +73,14 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <h5>Hi {{ nameLengkap }} berikut rincian belanjaan kamu: </h5>
-                            <div v-for="buyitem in detailTempTransaction" >
+                            <h5>Hi {{ namelengkap }} berikut rincian belanjaan kamu: </h5>
+                            <div v-for="buyitem in detailtemptransaction" >
                                 <div>
                                     {{ buyitem.item }} : Price {{ buyitem.price }} IDR
                                 </div>
                             </div>
                             <hr/>
-                            <h5>Total: {{ totalTempTransaction }}</h5>
+                            <h5>Total: {{ totaltemptransaction }}</h5>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -85,6 +89,7 @@
                     </div>
                 </div>
             </div>
+            
 
             <!-- Modal login -->
             <modal-login-form @result-user-id="getUserId" @result-name-lengkap="getNameLengkap" @result-token="getToken"></modal-login-form>
@@ -101,12 +106,12 @@
             data : {
                     info: [],
                     userId : '',
-                    nameLengkap : '',
+                    namelengkap : '',
                     email : '',
                     password : '',
                     token : '',//localStorage.getItem('token'),
-                    detailTempTransaction :[],
-                    totalTempTransaction : 0,
+                    detailtemptransaction :[],
+                    totaltemptransaction : 0,
                     error : '',
                     errorList : '', // error related to list items 
             },
@@ -119,35 +124,36 @@
                     this.userId = input;
                 },    
                 getNameLengkap : function(input){
-                    this.nameLengkap = input;
+                    this.namelengkap = input;
                 },
                 getInfo : function(input){
-                    console.log(input, 'ini input')
+                    // console.log(input, 'ini input')
                     this.info = input;
                 },
                 getErrorList : function(input){
                     this.errorList = input;
                 },
                 getDetailTempTransaction : function(input){
-                    this.detailTempTransaction = input;  
+                    this.detailtemptransaction = input;  
                 },
                 getTotalTempTransaction : function(input){
-                    this.totalTempTransaction = input;
+                    this.totaltemptransaction = input;
                 },
                 logoutFromSite(){
                     // empty all credentials
                     localStorage.setItem('token','');
                     this.token = '';
                     this.userId = '';
-                    this.nameLengkap = '';
+                    this.namelengkap = '';
 
                     // empty all related transactions data
-                    this.detailTempTransaction = [];
-                    this.totalTempTransaction = 0;
+                    this.detailtemptransaction = [];
+                    this.totaltemptransaction = 0;
                 },
                 createTransaction(){
                     let self = this;
-
+                    // console.log('masuk-->',this.detailtemptransaction);
+                    // console.log('total',this.totaltemptransaction)
                     axios({
                         method : 'POST',
                         url : 'http://localhost:3000/transactions/add',
@@ -155,14 +161,14 @@
                             token : self.token
                         },
                         data :{
-                            itemId : self.detailTempTransaction
+                            itemId : self.detailtemptransaction
                         }
                     })
                     .then( transaction =>{
                         // if the transaction is successful and user still login
                         // empty all previous transactions data
-                            this.detailTempTransaction = [];
-                            this.totalTempTransaction = 0;
+                            this.detailtempTransaction = [];
+                            this.totaltempTransaction = 0;
 
                             // close transaction modal
                             $('#cartModal').modal('hide');

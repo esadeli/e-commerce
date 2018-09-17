@@ -48,7 +48,7 @@ Vue.component('modal-login-form',{
             token : '',
             error : '',
             userId : '',
-            nameLengkap : ''
+            namelengkap : ''
         }
     },
     methods :{
@@ -76,16 +76,17 @@ Vue.component('modal-login-form',{
                 })
                 .then(user=>{
                     self.userId = user.data.data.id
-                    self.nameLengkap = user.data.data.name
+                    self.namelengkap = user.data.data.name
                     // empty the password
                     self.password = ''
                     
                     localStorage.setItem('token',jwttoken);
                     self.token = localStorage.getItem('token');
+                    // console.log('TEST-->',self.namelengkap)
 
                     //emit back to parent
                     this.$emit('result-user-id',self.userId);
-                    this.$emit('result-name-lengkap',self.nameLengkap);
+                    this.$emit('result-name-lengkap',self.namelengkap);
                     this.$emit('result-token',self.token);
 
                     // hide the login page
