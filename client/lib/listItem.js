@@ -5,8 +5,8 @@ Vue.component('list-items',{
         <!--set a space between carousel and list item -->                                                  
         <div class="marginBottom"></div>
         <div v-if="info.length >0 ">
-            <div v-if="errorList.length > 0">
-                {{ errorList }}
+            <div v-if="errorlist.length > 0">
+                {{ errorlist }}
             </div>
             <div v-for="data in info">
                 <div class="row">
@@ -99,7 +99,7 @@ Vue.component('list-items',{
         </div>
     </div>
     `   ,
-    props : ['info','errorList'],
+    props : ['info','errorlist', 'token'],
     data(){
         return {
             detailTempTransaction :[],

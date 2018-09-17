@@ -63,11 +63,12 @@ Vue.component('list-categories',{
             url : `http://localhost:3000/items/lists`
         })
         .then(response => {
-
+            console.log('masuk response', response.data.items)
             self.getCleanList(response.data.items,response.data.categories);
             
         })
         .catch(error =>{
+            console.log(error.message, 'ini errorrrr')
             self.error = error
             this.$emit('result-list-item-error',self.error)
         })
