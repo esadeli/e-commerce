@@ -4,8 +4,6 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const HashPassword = require('../helpers/HashPassword');
 const EmailValidator = require('../helpers/EmailValidator');
-// const mongoose = require('mongoose');
-// const ObjectId = mongoose.Types.ObjectId;
 
 class UserController {
 
@@ -124,8 +122,7 @@ class UserController {
                 email : req.email,
                 transactionsList : req.transactionsList
             }
-        })
-        
+        })        
     }
 }
 
